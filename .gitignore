@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project-specific
+data/
+models/*.keras
+models/*.h5
+.ipynb_checkpoints/
+node_modules/
+frontend/dist/
+backend/target/
+.env
