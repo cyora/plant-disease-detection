@@ -1,0 +1,4 @@
+model,val_accuracy,val_loss,params_millions,train_minutes,size_mb
+custom_cnn,0.8404,0.5287,0.4,15.5,4.9
+mobilenetv2,0.9637,0.1111,2.31,21.1,22.3
+efficientnetb0,0.9724,0.0814,4.1,27.9,29.5
