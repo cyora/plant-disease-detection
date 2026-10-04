@@ -1,0 +1,11 @@
+true_class,predicted_as,count
+Tomato___Tomato_Yellow_Leaf_Curl_Virus,Tomato___Spider_mites Two-spotted_spider_mite,14
+Tomato___Early_blight,Tomato___Target_Spot,13
+Tomato___Spider_mites Two-spotted_spider_mite,Tomato___Target_Spot,11
+Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot,Corn_(maize)___Northern_Leaf_Blight,10
+Corn_(maize)___Northern_Leaf_Blight,Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot,8
+Tomato___Late_blight,Potato___Late_blight,7
+Tomato___Bacterial_spot,Tomato___Septoria_leaf_spot,6
+Tomato___Early_blight,Tomato___Late_blight,6
+Tomato___Late_blight,Tomato___Early_blight,6
+Tomato___Septoria_leaf_spot,Tomato___Target_Spot,6
