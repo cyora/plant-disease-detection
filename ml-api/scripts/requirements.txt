@@ -1,0 +1,6 @@
+tensorflow>=2.20
+numpy
+opencv-python
+fastapi
+uvicorn[standard]
+python-multipart
