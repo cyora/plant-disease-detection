@@ -66,10 +66,22 @@ Classes: 38 | Plants: 14
    ## Session 6 — Spring Boot backend, Part A (Phase 5)
 - Installed MySQL 8.4.11 LTS + MySQL Workbench 26.7, IntelliJ IDEA, JDK Temurin 25
 - Created database plant_disease and a dedicated user plantapp (rights limited to this database)
-- Generated the Spring Boot 4.1.1 project (Java 25, Maven): Web MVC, Data JPA, MySQL Driver, Validation
+- Generated the Spring Boot 4.1.1 project (Java 25, Maven): Web MVC, Data JPA, MySQL Driver, Validation 
 - Layered architecture organized by feature: Controller -> Service -> Repository
 - Disease entity + data.sql with the 38 classes (description, symptoms, treatment, prevention, pathogen)
 - data.sql runs at each startup with INSERT ... ON DUPLICATE KEY UPDATE (no duplicates, texts stay up to date)
 - Checked: all 38 class names match class_names.json
 - Endpoints: GET /api/diseases, /api/diseases?plant=, /api/diseases/plants, /api/diseases/{className}
 - Design change: top-3 predictions will go in a separate table scan_prediction instead of a JSON column
+
+## Session 7 — Spring Boot backend, Part B (Phase 5)
+- Added: MlClient (calls FastAPI), image storage on disk, Scan + ScanPrediction entities,
+  history with pagination, scan details, images, delete, dashboard statistics, CORS, error handler
+- Tables created by Hibernate: scan, scan_prediction (column "position", since RANK is reserved in MySQL 8)
+- Uncertain scans keep their most probable disease, with uncertain = true
+- Bugs fixed:
+  - Record accessor imageUrl() hid the helper method imageUrl(s) -> called ScanResponses.imageUrl(s)
+  - Test image corrupted by "copy" with a wildcard (text mode) -> use "copy /b"
+- MlClient now uses Java's HTTP client (HTTP/1.1) and logs FastAPI's error responses
+- Tests with curl: valid photo -> 201 (Tomato Late blight 99.31%), FastAPI stopped -> 503,
+  text file -> 400; 3 scans saved with 3 predictions each
