@@ -42,6 +42,8 @@ def main():
         gradcam.append(cam_ms)
         is_correct = result["top_class"]["class_name"] == true_class
         correct += is_correct
+        if not is_correct:
+               print(f"  Wrong: {path.name} -> {result['top_class']['class_name']} ({result['top_class']['confidence']:.0%})")
         if result["uncertain"]:
             uncertain += 1
         else:
