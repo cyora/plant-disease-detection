@@ -1,0 +1,94 @@
+<a routerLink="/" class="back">New analysis</a>
+
+@if (loading()) {
+  <p class="status">Loading the result…</p>
+}
+
+@if (error(); as message) {
+  <div class="alert" role="alert">{{ message }}</div>
+}
+
+@if (scan(); as s) {
+  <section class="verdict"
+           [class.uncertain]="s.uncertain"
+           [class.healthy]="!s.uncertain && s.disease.healthy"
+           [class.diseased]="!s.uncertain && !s.disease.healthy">
+    @if (s.uncertain) {
+      <h1>Uncertain result</h1>
+      <p class="lead">
+        The model is only {{ percent(s.confidence) }}% sure, below the {{ s.threshold * 100 }}% it needs to give
+        a diagnosis. Retake the photo with one leaf on a plain background, in daylight.
+      </p>
+    } @else if (s.disease.healthy) {
+      <h1>No disease detected</h1>
+      <p class="lead">This looks like a healthy {{ s.disease.plant | lowercase }} leaf.</p>
+    } @else {
+      <h1>{{ s.disease.diseaseName }}</h1>
+      <p class="lead">
+        Detected on {{ s.disease.plant | lowercase }}.
+        @if (s.disease.pathogen) { Caused by <i>{{ s.disease.pathogen }}</i>. }
+      </p>
+    }
+
+    <app-confidence-bar [value]="s.confidence" [threshold]="s.threshold" />
+  </section>
+
+  <div class="grid">
+    <section class="images" aria-label="Photo and heatmap">
+      <figure>
+        <img [src]="api.url(s.imageUrl)" alt="The analyzed leaf photo" />
+        <figcaption>Your photo</figcaption>
+      </figure>
+      @if (s.heatmapUrl) {
+        <figure>
+          <img [src]="api.url(s.heatmapUrl)" alt="Heatmap showing the regions that weighed most in the decision" />
+          <figcaption>Where the model looked: red areas weighed most in the decision</figcaption>
+        </figure>
+      }
+    </section>
+
+    <section class="top3">
+      <h2>{{ s.uncertain ? 'Possible diagnoses' : 'Top 3 predictions' }}</h2>
+      <ol>
+        @for (p of s.top3; track p.position) {
+          <li [class.first]="p.position === 1">
+            <div class="row">
+              <span class="name">{{ p.plant }}: {{ p.diseaseName }}</span>
+              <span class="pct">{{ percent(p.confidence) }}%</span>
+            </div>
+            <div class="bar"><span [style.width.%]="p.confidence * 100"></span></div>
+          </li>
+        }
+      </ol>
+    </section>
+  </div>
+
+  @if (!s.uncertain) {
+    <section class="info">
+      <h2>{{ s.disease.healthy ? 'Keeping the plant healthy' : 'About this disease' }}</h2>
+      @if (s.disease.description) {
+        <p>{{ s.disease.description }}</p>
+      }
+      <dl>
+        @if (s.disease.symptoms) {
+          <div><dt>Symptoms</dt><dd>{{ s.disease.symptoms }}</dd></div>
+        }
+        @if (s.disease.treatment) {
+          <div><dt>Treatment</dt><dd>{{ s.disease.treatment }}</dd></div>
+        }
+        @if (s.disease.prevention) {
+          <div><dt>Prevention</dt><dd>{{ s.disease.prevention }}</dd></div>
+        }
+      </dl>
+      <p class="note">
+        This is a decision aid, not a certified diagnosis. Check with a local agricultural
+        advisor before applying any treatment.
+      </p>
+    </section>
+  }
+
+  <p class="meta">
+    Analyzed {{ s.createdAt | date: 'd MMM y, HH:mm' }}.
+    @if (s.inferenceMs !== null) { Prediction took {{ s.inferenceMs }} ms. }
+  </p>
+}

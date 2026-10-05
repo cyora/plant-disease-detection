@@ -1,0 +1,57 @@
+<div class="layout">
+  <section class="intro">
+    <h1>Check a leaf</h1>
+    <p class="lead">
+      Upload a photo of one leaf. LeafScan recognizes 26 diseases and healthy leaves
+      on 14 crops, and shows which part of the leaf led to its answer.
+    </p>
+
+    <h2>For a reliable result</h2>
+    <ul class="tips">
+      <li>Photograph a single leaf, filling most of the frame.</li>
+      <li>Use a plain background, such as a sheet of paper or a table.</li>
+      <li>Take the photo in daylight, without strong shadows.</li>
+    </ul>
+  </section>
+
+  <section class="upload" aria-label="Photo upload">
+    @if (!preview()) {
+      <label class="dropzone"
+             for="leaf-photo"
+             [class.dragging]="dragging()"
+             (dragover)="onDragOver($event)"
+             (dragleave)="onDragLeave()"
+             (drop)="onDrop($event)">
+        <svg viewBox="0 0 48 48" width="56" height="56" aria-hidden="true">
+          <path d="M40 8C21 8 10 17 10 31c0 3 .7 6 2.2 8.2C14.5 31 20 24 30 19.5 21 25.5 16 32 13.8 40c2.3.9 4.8 1.4 7.3 1.4C34 41.4 40 28 40 8z"
+                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+        </svg>
+        <span class="dz-title">Drop a leaf photo here</span>
+        <span class="dz-sub">or <u>choose a file</u> (JPG or PNG, up to 5 MB)</span>
+      </label>
+      <input id="leaf-photo"
+             class="visually-hidden"
+             type="file"
+             accept="image/jpeg,image/png"
+             (change)="onFileInput($event)" />
+    } @else {
+      <figure class="preview">
+        <img [src]="preview()" alt="Selected leaf photo" />
+        <figcaption>{{ file()?.name }}</figcaption>
+      </figure>
+
+      <div class="actions">
+        <button class="btn" type="button" (click)="analyze()" [disabled]="loading()">
+          @if (loading()) { Analyzing… } @else { Analyze leaf }
+        </button>
+        <button class="btn secondary" type="button" (click)="clear()" [disabled]="loading()">
+          Choose another photo
+        </button>
+      </div>
+    }
+
+    @if (error(); as message) {
+      <div class="alert" role="alert">{{ message }}</div>
+    }
+  </section>
+</div>

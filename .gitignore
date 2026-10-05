@@ -226,3 +226,6 @@ node_modules/
 frontend/dist/
 backend/target/
 .env
+
+#for test, images never been trained on, the model didn't see them:     
+ml-api/sample_images/

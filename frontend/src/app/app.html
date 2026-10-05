@@ -1,0 +1,28 @@
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a routerLink="/" class="brand" aria-label="LeafScan home">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+        <path d="M27 5C14 5 6 11 6 21c0 2 .5 4 1.5 5.5C9 21 13 16 20 13c-6 4-9.5 8.5-11 14 1.6.6 3.3 1 5 1 9 0 13-9 13-23z"
+              fill="currentColor"/>
+      </svg>
+      <span>LeafScan</span>
+    </a>
+
+    <nav aria-label="Main">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Check a leaf</a>
+      <a routerLink="/history" routerLinkActive="active">History</a>
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/diseases" routerLinkActive="active">Diseases</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <router-outlet />
+</main>
+
+<footer class="footer">
+  <p>Model: EfficientNetB0 trained on PlantVillage, 38 classes across 14 crops. Results are a decision aid, not a certified diagnosis.</p>
+</footer>

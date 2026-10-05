@@ -1,0 +1,135 @@
+.back {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.verdict {
+  background: var(--white);
+  border: 1px solid var(--leaf-200);
+  border-left: 8px solid var(--leaf-700);
+  border-radius: var(--radius-m);
+  padding: 1.75rem 2rem 1.5rem;
+  margin-bottom: 2rem;
+
+  &.diseased { border-left-color: var(--rust); h1 { color: var(--rust); } }
+  &.healthy { border-left-color: var(--healthy); }
+  &.uncertain { border-left-color: var(--ochre); h1 { color: var(--ochre); } }
+}
+
+.lead {
+  font-size: 1.15rem;
+  margin-bottom: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 800px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  figure { margin: 0; }
+
+  img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-s);
+    border: 1px solid var(--leaf-200);
+  }
+
+  figcaption {
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+}
+
+.top3 {
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--leaf-200);
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .first .name { font-weight: 700; }
+
+  .pct {
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+
+  .bar {
+    height: 6px;
+    background: var(--leaf-200);
+    border-radius: 3px;
+
+    span {
+      display: block;
+      height: 100%;
+      min-width: 2px;
+      border-radius: 3px;
+      background: var(--leaf-700);
+    }
+  }
+}
+
+.info {
+  background: var(--white);
+  border: 1px solid var(--leaf-200);
+  border-radius: var(--radius-m);
+  padding: 1.75rem 2rem;
+
+  dl {
+    margin: 1.25rem 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  dt {
+    font-family: var(--font-head);
+    font-weight: 600;
+    color: var(--leaf-900);
+  }
+
+  dd {
+    margin: 0.2rem 0 0;
+    max-width: 68ch;
+  }
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--muted);
+  border-top: 1px solid var(--leaf-200);
+  padding-top: 1rem;
+  margin: 0;
+}
+
+.meta {
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}

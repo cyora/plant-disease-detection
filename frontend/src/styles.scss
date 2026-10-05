@@ -1,0 +1,100 @@
+/* Global styles and design tokens for LeafScan */
+
+:root {
+  /* Colors taken from the leaf itself */
+  --leaf-900: #183a24;   /* deep leaf: header, headings */
+  --leaf-700: #2f6b3f;   /* primary actions */
+  --leaf-200: #cfe0cb;   /* borders, tracks */
+  --sage-50:  #f3f7f1;   /* page background */
+  --white:    #ffffff;
+  --ink:      #1e2a22;   /* body text */
+  --muted:    #5b6b60;   /* secondary text */
+  --rust:     #8f4a1c;   /* diseased */
+  --ochre:    #a8701a;   /* uncertain */
+  --healthy:  #3e8e41;   /* healthy */
+  --danger:   #a3302a;   /* errors */
+
+  --font-text: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-head: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --page-width: 1040px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--sage-50);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-head);
+  color: var(--leaf-900);
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+}
+h1 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.375rem; font-weight: 600; }
+h3 { font-size: 1.125rem; font-weight: 600; }
+
+p { margin: 0 0 1rem; max-width: 68ch; }
+
+a { color: var(--leaf-700); }
+
+img { max-width: 100%; display: block; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.4rem;
+  border-radius: var(--radius-s);
+  border: 2px solid var(--leaf-700);
+  background: var(--leaf-700);
+  color: var(--white);
+  font: 700 1rem var(--font-text);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn:hover { background: var(--leaf-900); border-color: var(--leaf-900); }
+.btn:disabled { opacity: 0.6; cursor: wait; }
+.btn.secondary { background: transparent; color: var(--leaf-700); }
+.btn.secondary:hover { background: var(--leaf-200); }
+
+/* Messages */
+.alert {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-s);
+  border-left: 5px solid var(--danger);
+  background: #f8e9e7;
+  color: #6e1f1a;
+  margin: 1rem 0;
+}
+
+.status { color: var(--muted); }
+
+/* Accessibility */
+:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
