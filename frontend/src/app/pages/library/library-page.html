@@ -1,0 +1,50 @@
+<h1>Diseases</h1>
+<p class="lead">
+  The {{ diseases().length || 38 }} classes LeafScan can recognize: 26 diseases and 12 healthy leaf types.
+  Open an entry to read its symptoms, treatment and prevention.
+</p>
+
+@if (error(); as message) {
+  <div class="alert" role="alert">{{ message }}</div>
+}
+
+@if (loading()) {
+  <p class="status">Loading the library…</p>
+}
+
+@if (diseases().length > 0) {
+  <div class="filters" role="group" aria-label="Filter by plant">
+    <button type="button" [attr.aria-pressed]="selectedPlant() === null" (click)="select(null)">
+      All plants
+    </button>
+    @for (plant of plants(); track plant) {
+      <button type="button" [attr.aria-pressed]="selectedPlant() === plant" (click)="select(plant)">
+        {{ plant }}
+      </button>
+    }
+  </div>
+
+  <p class="count">{{ visible().length }} {{ visible().length === 1 ? 'entry' : 'entries' }}</p>
+
+  <div class="entries">
+    @for (d of visible(); track d.id) {
+      <details [class.healthy]="d.healthy">
+        <summary>
+          <span class="name">{{ d.healthy ? 'Healthy leaf' : d.diseaseName }}</span>
+          <span class="plant">{{ d.plant }}</span>
+        </summary>
+        <div class="body">
+          @if (d.pathogen) {
+            <p class="pathogen">Caused by <i>{{ d.pathogen }}</i></p>
+          }
+          @if (d.description) { <p>{{ d.description }}</p> }
+          <dl>
+            @if (d.symptoms) { <div><dt>Symptoms</dt><dd>{{ d.symptoms }}</dd></div> }
+            @if (d.treatment) { <div><dt>Treatment</dt><dd>{{ d.treatment }}</dd></div> }
+            @if (d.prevention) { <div><dt>Prevention</dt><dd>{{ d.prevention }}</dd></div> }
+          </dl>
+        </div>
+      </details>
+    }
+  </div>
+}

@@ -1,0 +1,60 @@
+<h1>History</h1>
+
+@if (data(); as d) {
+  <p class="lead">
+    {{ d.totalElements }} {{ d.totalElements === 1 ? 'analysis' : 'analyses' }}, most recent first.
+  </p>
+}
+
+@if (error(); as message) {
+  <div class="alert" role="alert">{{ message }}</div>
+}
+
+@if (loading() && !data()) {
+  <p class="status">Loading the history…</p>
+}
+
+@if (data(); as d) {
+  @if (d.totalElements === 0) {
+    <div class="empty">
+      <p>No analyses yet. Your results will appear here after your first photo.</p>
+      <a class="btn" routerLink="/">Check a leaf</a>
+    </div>
+  } @else {
+    <ul class="scans">
+      @for (scan of d.content; track scan.id) {
+        <li [class]="status(scan)">
+          <a class="scan-link" [routerLink]="['/scans', scan.id]">
+            <img [src]="api.url(scan.imageUrl)" alt="" loading="lazy" />
+            <div class="text">
+              <span class="title">{{ title(scan) }}</span>
+              <span class="sub">
+                @if (!scan.uncertain) { {{ scan.plant }}, }{{ scan.createdAt | date: 'd MMM y, HH:mm' }}
+              </span>
+            </div>
+            <span class="confidence">{{ percent(scan.confidence) }}%</span>
+          </a>
+          <button class="delete"
+                  type="button"
+                  (click)="remove(scan)"
+                  [disabled]="deletingId() === scan.id"
+                  [attr.aria-label]="'Delete analysis of ' + scan.createdAt">
+            Delete
+          </button>
+        </li>
+      }
+    </ul>
+
+    @if (d.totalPages > 1) {
+      <nav class="pager" aria-label="Pages">
+        <button class="btn secondary" type="button" (click)="load(d.page - 1)" [disabled]="d.page === 0 || loading()">
+          Previous
+        </button>
+        <span>Page {{ d.page + 1 }} of {{ d.totalPages }}</span>
+        <button class="btn secondary" type="button" (click)="load(d.page + 1)" [disabled]="d.page + 1 >= d.totalPages || loading()">
+          Next
+        </button>
+      </nav>
+    }
+  }
+}

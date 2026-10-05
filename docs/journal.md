@@ -85,3 +85,14 @@ Classes: 38 | Plants: 14
 - MlClient now uses Java's HTTP client (HTTP/1.1) and logs FastAPI's error responses
 - Tests with curl: valid photo -> 201 (Tomato Late blight 99.31%), FastAPI stopped -> 503,
   text file -> 400; 3 scans saved with 3 predictions each
+
+  ## Session 8 — Angular interface (Phase 6)
+- Installed Node.js 24 LTS and the Angular CLI; created the frontend (SCSS, no SSR, standalone components, signals)
+- Pages: Check a leaf, Result, History, Dashboard, Diseases
+- Design: leaf-based palette; rust = disease, green = healthy, ochre = uncertain on every page;
+  Atkinson Hyperlegible for readability; confidence bar with a marker at the 80% threshold
+- Uncertain results hide the treatment advice and show the top 3 as possible diagnoses
+- Dashboard charts in plain HTML/CSS (no chart library)
+- Tests in the browser: Common rust 100% with heatmap on the pustules; text photo -> uncertain 25.3%;
+  FastAPI stopped -> clear message in the interface; history and library working
+- Fixes: "<0.1%" for tiny confidences, threshold shown as 80%, no plant name on uncertain history rows

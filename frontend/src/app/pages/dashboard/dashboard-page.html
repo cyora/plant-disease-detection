@@ -1,0 +1,92 @@
+<h1>Dashboard</h1>
+
+@if (loading()) {
+  <p class="status">Loading the statistics…</p>
+}
+
+@if (error(); as message) {
+  <div class="alert" role="alert">{{ message }}</div>
+}
+
+@if (stats(); as s) {
+  @if (s.totalScans === 0) {
+    <div class="empty">
+      <p>No analyses yet. The statistics will appear after your first photo.</p>
+      <a class="btn" routerLink="/">Check a leaf</a>
+    </div>
+  } @else {
+    <dl class="figures">
+      <div><dt>Analyses</dt><dd>{{ s.totalScans }}</dd></div>
+      <div><dt>Diseases detected</dt><dd class="rust">{{ s.diseasedScans }}</dd></div>
+      <div><dt>Healthy leaves</dt><dd class="green">{{ s.healthyScans }}</dd></div>
+      <div><dt>Uncertain results</dt><dd class="ochre">{{ s.uncertainScans }}</dd></div>
+      <div><dt>Average confidence</dt><dd>{{ percent(s.averageConfidence) }}%</dd></div>
+    </dl>
+
+    @if (outcome(); as o) {
+      <section class="panel">
+        <h2>Outcome of all analyses</h2>
+        <div class="stack" role="img"
+             [attr.aria-label]="s.diseasedScans + ' diseased, ' + s.healthyScans + ' healthy, ' + s.uncertainScans + ' uncertain'">
+          <span class="seg rust-bg" [style.width.%]="o.diseased"></span>
+          <span class="seg green-bg" [style.width.%]="o.healthy"></span>
+          <span class="seg ochre-bg" [style.width.%]="o.uncertain"></span>
+        </div>
+        <ul class="legend">
+          <li><span class="dot rust-bg"></span>Diseased {{ o.diseased.toFixed(0) }}%</li>
+          <li><span class="dot green-bg"></span>Healthy {{ o.healthy.toFixed(0) }}%</li>
+          <li><span class="dot ochre-bg"></span>Uncertain {{ o.uncertain.toFixed(0) }}%</li>
+        </ul>
+      </section>
+    }
+
+    <div class="two-cols">
+      <section class="panel">
+        <h2>Most detected diseases</h2>
+        @if (s.topDiseases.length === 0) {
+          <p class="status">No disease detected yet.</p>
+        } @else {
+          <ul class="bars">
+            @for (item of s.topDiseases; track item.label) {
+              <li>
+                <div class="row"><span>{{ item.label }}</span><span class="count">{{ item.count }}</span></div>
+                <div class="bar"><span class="rust-bg" [style.width.%]="barWidth(item, s.topDiseases)"></span></div>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <section class="panel">
+        <h2>Analyses per plant</h2>
+        @if (s.scansByPlant.length === 0) {
+          <p class="status">No confident result yet.</p>
+        } @else {
+          <ul class="bars">
+            @for (item of s.scansByPlant; track item.label) {
+              <li>
+                <div class="row"><span>{{ item.label }}</span><span class="count">{{ item.count }}</span></div>
+                <div class="bar"><span class="leaf-bg" [style.width.%]="barWidth(item, s.scansByPlant)"></span></div>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+    </div>
+
+    <section class="panel">
+      <h2>Activity over the last 30 days</h2>
+      <div class="columns" role="img" [attr.aria-label]="'Analyses per day over the last 30 days, maximum ' + maxDaily() + ' in a day'">
+        @for (day of s.scansLast30Days; track day.date) {
+          <div class="col" [title]="(day.date | date: 'd MMM') + ': ' + day.count">
+            <span [style.height.%]="(day.count / maxDaily()) * 100" [class.zero]="day.count === 0"></span>
+          </div>
+        }
+      </div>
+      <div class="axis">
+        <span>{{ s.scansLast30Days[0].date | date: 'd MMM' }}</span>
+        <span>Today</span>
+      </div>
+    </section>
+  }
+}
