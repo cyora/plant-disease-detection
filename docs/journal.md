@@ -63,4 +63,13 @@ Classes: 38 | Plants: 14
    - Second run: inference median 186 ms (p95 209), Grad-CAM median 420 ms (p95 498)
    - Error handling: non-image file returns 400; a photo of text returns uncertain (25%)
 
-   
+   ## Session 6 — Spring Boot backend, Part A (Phase 5)
+- Installed MySQL 8.4.11 LTS + MySQL Workbench 26.7, IntelliJ IDEA, JDK Temurin 25
+- Created database plant_disease and a dedicated user plantapp (rights limited to this database)
+- Generated the Spring Boot 4.1.1 project (Java 25, Maven): Web MVC, Data JPA, MySQL Driver, Validation
+- Layered architecture organized by feature: Controller -> Service -> Repository
+- Disease entity + data.sql with the 38 classes (description, symptoms, treatment, prevention, pathogen)
+- data.sql runs at each startup with INSERT ... ON DUPLICATE KEY UPDATE (no duplicates, texts stay up to date)
+- Checked: all 38 class names match class_names.json
+- Endpoints: GET /api/diseases, /api/diseases?plant=, /api/diseases/plants, /api/diseases/{className}
+- Design change: top-3 predictions will go in a separate table scan_prediction instead of a JSON column
